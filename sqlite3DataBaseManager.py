@@ -6,6 +6,9 @@ from priceData import PriceData
 fakeData = PriceData("2020-10-23 22:12:11.123", 10000.142)
 
 class DataBaseManager:
+    """
+        This class creates and manages the priceData dabase
+    """
     def createDataBase(self, dataBaseName):
         self.conn = sqlite3.connect(dataBaseName + ".db")
     
@@ -18,16 +21,23 @@ class DataBaseManager:
         Price real)""")
 
     def insertData(self, priceDataObject):
-        self.c.execute("INSERT INTO priceData VALUES (:Time, : Price)",
-        {"Time": priceDataObject})
+        self.c.execute("INSERT INTO priceData VALUES (:Time, :Price)",
+        {"Time": priceDataObject.time, "Price": priceDataObject.price})
     
+    def showData(self):
+        self.c.execute("SELECT * FROM priceData")
+        self.c.fetchall()
+
     def closeDataBaseConnection(self):
         self.conn.cursor()
 
 dataBaseManager = DataBaseManager()
 dataBaseManager.createDataBase("bitcoin")
 dataBaseManager.connectToDataBase("bitcoin.db")
-dataBaseManager.createTableInDataBase()
+#dataBaseManager.createTableInDataBase()
+dataBaseManager.insertData(fakeData)
 dataBaseManager.closeDataBaseConnection()
+data = dataBaseManager.showData()
 dataBaseManager.conn.close()
+print(data)
 
