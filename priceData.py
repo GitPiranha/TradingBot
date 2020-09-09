@@ -1,4 +1,4 @@
 class PriceData:
     def __init__(self, timeStamp, price):
-        self.time = timeStamp
+        self.date = timeStamp
         self.price = price
